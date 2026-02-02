@@ -1,7 +1,7 @@
 {
-  "name": "growi-plugin-calendar-embed",
+  "name": "growi-plugin-today-embed",
   "version": "1.0.0",
-  "description": "GROWI plugin for embed calendar",
+  "description": "GROWI plugin for embed today",
   "license": "MIT",
   "keywords": [
     "growi",
@@ -18,8 +18,7 @@
     "react-dom": "^18.3.1",
     "react-innertext": "^1.1.5",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0",
-    "vanilla-calendar-pro": "^2.9.10"
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
