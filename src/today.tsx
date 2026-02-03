@@ -16,12 +16,17 @@ export const plugin: Plugin = function() {
 
       if (n.name !== 'today') return;
 
+      // UUIDを計算する
+      const uuid = "today-" + Math.random().toString(36).slice(2);
+
+      // GrowiNode の value には、複雑な HTML を直接書けないため、id 属性を付与してから
+      // DOM 上で書き換える方法を取る
       n.type = 'html';
-      n.value = '<div id="today"></div>'
+      n.value = `<div id="${uuid}"></div>`
 
       const id = setInterval(() => {
-        if (document.querySelector('#today') != null) {
-          document.querySelector('#today')!.innerHTML = createTodayNode();
+        if (document.querySelector('#' + uuid) != null) {
+          document.querySelector('#' + uuid)!.innerHTML = createTodayNode();
           clearInterval(id);
         }
       }, 100);
@@ -37,8 +42,12 @@ const createTodayNode = function() {
   const date = now.getDate();
   const day = now.getDay();
 
+  // nowの直近の月曜日を求める
+  const formerMonday = (0 === day) ? date - 6 : date - (day - 1);
+  const nextMonday = formerMonday + 7;
+
   var html = [];
-  html.push('<fieldset>');
+  html.push('<fieldset style="border:dotted 2px lightgray">');
   html.push('<legend>' + now.toISOString().slice(0, 10) + '</legend>');
   html.push(year.toString());
   html.push('<br/>');
@@ -47,6 +56,10 @@ const createTodayNode = function() {
   html.push(now.toLocaleDateString('en', {month: 'long'}));
   html.push('<br/>');
   html.push(progress(new Date(year, month, 1), new Date(year, month+1, 1), now));
+  html.push('<br/>');
+  html.push('Week ' + calcIsoWeekNumber(now));
+  html.push('<br/>');
+  html.push(progress(new Date(year, month, formerMonday), new Date(year, month, nextMonday), now));
   html.push('<br/>');
   html.push(now.toLocaleDateString('en', {weekday: 'long'}));
   html.push('<br/>');
@@ -63,5 +76,50 @@ const progress = function(start: Date, end: Date, now: Date): string {
   const current = (now.getTime() - start.getTime()) / msecInDay;
   const percent = Math.floor((current / total) * 100);
 
-  return `<meter value="${current}" min="0" max="${total}" title="${percent}% (${current}/${total})" style="width:75px">${percent}% (${current}/${total})</meter>`;
+  const current_rounded = current.toFixed(1);
+
+  return `<meter value="${current}" min="0" max="${total}" title="${percent}% (${current_rounded}/${total})" style="width:75px">${percent}% (${current_rounded}/${total})</meter>`;
 }
+
+const calcIsoWeekNumber = function(now: Date): number {
+  const year = now.getFullYear();
+  const weekNumber = _calcIsoWeekNumber(now, year);
+
+  // 年初の週が木曜日を含まない場合、前年の週番号を返す
+  return weekNumber === 0 ? _calcIsoWeekNumber(now, year - 1) : weekNumber;
+}
+
+const _calcIsoWeekNumber = function(now: Date, year: number): number {
+
+  // 週番号計算の起点となる月曜日を求める (1/1 に対する相対日を求める)
+  let offset = 0;
+  switch(new Date(year, 0, 1).getDay()) {
+    case 0: // Sunday
+      offset = 1;
+      break;
+    case 1: // Monday
+      offset = 0;
+      break;
+    case 2: // Tuesday
+      offset = -1;
+      break;
+    case 3: // Wednesday
+      offset = -2;
+      break;
+    case 4: // Thursday
+      offset = -3;
+      break;
+    case 5: // Friday
+      offset = 3;
+      break;
+    case 6: // Saturday
+    default:
+      offset = 2;
+      break;
+  }
+
+  const firstMonday = new Date(year, 0, 1 + offset);
+
+  return Math.ceil((((now.getTime() - firstMonday.getTime()) / msecInDay) + 1) / 7);
+}
+  
