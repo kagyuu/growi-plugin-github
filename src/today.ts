@@ -17,8 +17,13 @@ export const plugin: Plugin = function() {
   return (tree) => {
     visit(tree, (node) => {
       const n = node as unknown as GrowiNode;
-      console.log(n);
+
+      if (n.name !== 'today') return;
       
+      console.log(n);
+
+      n.type = 'html';
+      n.value = '<fieldset><legend>2026-02-03</legend><meter value="33.54775462963" min="0" max="365" title="9.1% (33.5/365)" style="width:75px">9.1% (33.5/365)</meter></fieldset>';      
     });
   };
 };
