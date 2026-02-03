@@ -34,3 +34,15 @@ const activate = (): void => {
     return options;
   };
 };
+
+const deactivate = (): void => {
+};
+
+// register activate
+if ((window as any).pluginActivators == null) {
+  (window as any).pluginActivators = {};
+}
+(window as any).pluginActivators[config.name] = {
+  activate,
+  deactivate,
+};
