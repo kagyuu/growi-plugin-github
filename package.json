@@ -1,7 +1,7 @@
 {
-  "name": "growi-plugin-amazon-embed",
+  "name": "growi-plugin-today-embed",
   "version": "1.0.0",
-  "description": "GROWI plugin for embed amazon",
+  "description": "GROWI plugin for embed today",
   "license": "MIT",
   "keywords": [
     "growi",

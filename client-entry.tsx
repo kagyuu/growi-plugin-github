@@ -1,5 +1,5 @@
 import config from './package.json';
-import { plugin } from './src/amazon';
+import { plugin } from './src/today';
 import { Options, Func, ViewOptions } from './types/utils';
 
 declare const growiFacade : {
