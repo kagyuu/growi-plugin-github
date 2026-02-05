@@ -1,5 +1,5 @@
 import config from './package.json';
-import { plugin } from './src/today';
+import { todayPlugin } from './src/today';
 import { Options, Func, ViewOptions } from './types/utils';
 
 declare const growiFacade : {
@@ -25,14 +25,14 @@ const activate = (): void => {
   // For page view
   optionsGenerators.customGenerateViewOptions = (...args) => {
     const options = optionsGenerators.generateViewOptions(...args);
-    options.remarkPlugins.push(plugin as any);  // プラグイン追加（表示用）
+    options.remarkPlugins.push(todayPlugin as any);  // プラグイン追加（表示用）
     return options;
   };
 
   // For preview
   optionsGenerators.customGeneratePreviewOptions = (...args) => {
     const options = optionsGenerators.generatePreviewOptions(...args);
-    options.remarkPlugins.push(plugin as any);  // プラグイン追加（プレビュー用）
+    options.remarkPlugins.push(todayPlugin as any);  // プラグイン追加（プレビュー用）
     return options;
   };
 
