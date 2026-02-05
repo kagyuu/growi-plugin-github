@@ -14,6 +14,8 @@ declare const growiFacade : {
 };
 
 const activate = (): void => {
+  console.log(`Activating ${config.name} v${config.version}...`);
+
   if (growiFacade == null || growiFacade.markdownRenderer == null) {
     return;
   }
@@ -33,6 +35,8 @@ const activate = (): void => {
     options.remarkPlugins.push(plugin as any);  // プラグイン追加（プレビュー用）
     return options;
   };
+
+  console.log(`${config.name} activated.`);
 };
 
 const deactivate = (): void => {
@@ -46,3 +50,5 @@ if ((window as any).pluginActivators == null) {
   activate,
   deactivate,
 };
+
+console.log(`${config.name} v${config.version} is loaded.`);
