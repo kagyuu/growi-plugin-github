@@ -11,7 +11,7 @@ interface GrowiNode extends Node {
   value: string;
 }
 
-export const todayPlugin: Plugin = function() {
+export const plugin: Plugin = function() {
   return (tree) => {
     visit(tree, (node) => {
       const n = node as unknown as GrowiNode;

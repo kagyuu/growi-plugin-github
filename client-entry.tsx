@@ -1,5 +1,5 @@
 import config from './package.json';
-import { todayPlugin } from './src/today';
+import { plugin } from './src/today';
 import { Options, Func, ViewOptions } from './types/utils';
 
 declare const growiFacade : any;
@@ -19,18 +19,18 @@ const activate = (): void => {
   // For page view
   optionsGenerators.customGenerateViewOptions = (...args: any[]) => {
     const options = originalCustomViewOptions ? originalCustomViewOptions(...args) : optionsGenerators.generateViewOptions(...args);
-    options.remarkPlugins.push(todayPlugin as any);  // プラグイン追加（表示用）
+    options.remarkPlugins.push(plugin as any);  // プラグイン追加（表示用）
 
-    console.log('todayPlugin added to view options:', options.remarkPlugins);
+    console.log(`${config.name} added to view options:`, options.remarkPlugins);
     return options;
   };
 
   // For preview
   optionsGenerators.customGeneratePreviewOptions = (...args: any[]) => {
     const options = originalCustomPreviewOptions ? originalCustomPreviewOptions(...args) : optionsGenerators.generatePreviewOptions(...args);
-    options.remarkPlugins.push(todayPlugin as any);  // プラグイン追加（プレビュー用）
+    options.remarkPlugins.push(plugin as any);  // プラグイン追加（プレビュー用）
 
-    // console.log('todayPlugin added to preview options:', options.remarkPlugins);
+    // console.log(`${config.name} added to preview options:`, options.remarkPlugins);
     return options;
   };
 
