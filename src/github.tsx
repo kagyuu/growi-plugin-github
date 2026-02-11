@@ -1,5 +1,7 @@
 import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark.css';
 
 import './github.css'
 
@@ -43,10 +45,6 @@ export const plugin: Plugin = function() {
 
 const createCode = async function(attributeLang: string, attributeUrl: string): Promise<string> {
 
-  // Download the content from the URL and embed it in the code block
-  let content = '';
-  let errorMessage = '';
-  
   try {
     const response = await fetch(attributeUrl);
     
@@ -54,13 +52,9 @@ const createCode = async function(attributeLang: string, attributeUrl: string): 
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    content = await response.text();
-    var html = [];
-    html.push('<pre><code class="language-' + attributeLang + '">');
-    html.push(content);
-    html.push('</code></pre>');
-
-    return html.join('');
+    const content = await response.text();
+    const highlighted = hljs.highlight(content, { language: attributeLang, ignoreIllegals: true });
+    return highlighted.value
 
   } catch (error) {
     console.error('Failed to fetch content from URL:', attributeUrl, error);
