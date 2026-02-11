@@ -46,8 +46,8 @@ export const plugin: Plugin = function() {
 };
 
 const createCode = async function(lang: string, url: string): Promise<string> {
+  const rawUrl = url.replace(/\/blob\//, '/raw/refs/heads/');
   try {
-    const rawUrl = url.replace('/blob/', '/raw/refs/heads/');
     const response = await fetch(rawUrl);
     
     if (!response.ok) {
@@ -66,7 +66,7 @@ const createCode = async function(lang: string, url: string): Promise<string> {
     return html.join('');
 
   } catch (error) {
-    console.error('Failed to fetch content from URL:', url, error);
+    console.error('Failed to fetch content from URL:', rawUrl, error);
     
     return `Error loading content from ${url}: ${error instanceof Error ? error.message : 'Unknown error'}`;
   }
