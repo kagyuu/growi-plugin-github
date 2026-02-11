@@ -59,9 +59,9 @@ const createCode = async function(attributeLang: string, attributeUrl: string): 
     html.push('<div class="growi-plugin-github-window-title">');
     html.push(`<a href="${attributeUrl}" target="_blank" rel="noopener noreferrer">${attributeUrl}</a>`);
     html.push('</div>');
-    html.push('<div class="growi-plugin-github-code">');
-    html.push(hljs.highlight(content, { language: attributeLang, ignoreIllegals: true }).value);
-    html.push('</div>');
+    html.push('<div class="growi-plugin-github-code"><pre><code>');
+    html.push(hljs.highlight(content, { language: attributeLang, ignoreIllegals: true}).value);
+    html.push('</code></pre></div>');
     return html.join('');
 
   } catch (error) {
