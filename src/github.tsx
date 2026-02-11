@@ -20,7 +20,9 @@ export const plugin: Plugin = function() {
 
       if (n.name !== 'github') return;
 
-      const attributeLang = n.attributes['language'] ? n.attributes['language'] : 'plaintext';
+      const attributeLang = n.attributes['lang'] 
+        ? n.attributes['lang'] 
+        : (n.attributes['language'] ? n.attributes['language'] : 'plaintext');
       const attributeUrl = n.attributes['url'];
 
       // UUIDを計算する
@@ -29,7 +31,7 @@ export const plugin: Plugin = function() {
       // GrowiNode の value には、複雑な HTML を直接書けないため、id 属性を付与してから
       // DOM 上で書き換える方法を取る
       n.type = 'html';
-      n.value = `<div id="${uuid}"></div>`
+      n.value = `<div class="growi-plugin-github-window-container" id="${uuid}"></div>`
 
       const id = setInterval(() => {
         if (document.querySelector('#' + uuid) != null) {
@@ -54,9 +56,12 @@ const createCode = async function(attributeLang: string, attributeUrl: string): 
     const content = await response.text();
 
     const html = [];
-    html.push(`<pre>${attributeUrl}<code class="lang-${attributeLang}">`);
+    html.push('<div class="growi-plugin-github-window-title">');
+    html.push(`<a href="${attributeUrl}" target="_blank" rel="noopener noreferrer">${attributeUrl}</a>`);
+    html.push('</div>');
+    html.push('<div class="growi-plugin-github-code">');
     html.push(hljs.highlight(content, { language: attributeLang, ignoreIllegals: true }).value);
-    html.push('</code></pre>');
+    html.push('</div>');
     return html.join('');
 
   } catch (error) {
