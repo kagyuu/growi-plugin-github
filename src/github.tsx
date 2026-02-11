@@ -46,7 +46,11 @@ export const plugin: Plugin = function() {
 };
 
 const createCode = async function(lang: string, url: string): Promise<string> {
-  const rawUrl = url.replace(/\/blob\//, '/raw/refs/heads/');
+
+  // Git Hub : https://github.com/kagyuu/growi-plugin-github/blob/main/src/github.tsx
+  // RAW URL : https://raw.githubusercontent.com/kagyuu/growi-plugin-github/refs/heads/main/src/github.tsx
+
+  const rawUrl = url.replace(/\/github.com\//, '/raw.githubusercontent.com/').replace(/\/blob\//, '/refs/heads/');
   try {
     console.log(rawUrl)
     const response = await fetch(rawUrl);
