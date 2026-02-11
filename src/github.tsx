@@ -1,0 +1,70 @@
+import type { Plugin } from 'unified';
+import { visit } from 'unist-util-visit';
+
+import './github.css'
+
+interface GrowiNode extends Node {
+  name: string;
+  type: string;
+  attributes: {[key: string]: string}
+  children: GrowiNode[];
+  value: string;
+}
+
+export const plugin: Plugin = function() {
+  return (tree) => {
+    visit(tree, (node) => {
+      const n = node as unknown as GrowiNode;
+
+      if (n.name !== 'github') return;
+
+      const attributeLang = n.attributes['language'] ? n.attributes['language'] : 'plaintext';
+      const attributeUrl = n.attributes['url'];
+
+      // UUIDを計算する
+      const uuid = "github-" + Math.random().toString(36).slice(2);
+
+      // GrowiNode の value には、複雑な HTML を直接書けないため、id 属性を付与してから
+      // DOM 上で書き換える方法を取る
+      n.type = 'html';
+      n.value = `<div id="${uuid}"></div>`
+
+      const id = setInterval(() => {
+        if (document.querySelector('#' + uuid) != null) {
+          createCode(attributeLang, attributeUrl).then(codeHtml => {
+            document.querySelector('#' + uuid)!.innerHTML = codeHtml;
+          });
+          clearInterval(id);
+        }
+      }, 100);
+    });
+  };
+};
+
+const createCode = async function(attributeLang: string, attributeUrl: string): Promise<string> {
+
+  // Download the content from the URL and embed it in the code block
+  let content = '';
+  let errorMessage = '';
+  
+  try {
+    const response = await fetch(attributeUrl);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    content = await response.text();
+    var html = [];
+    html.push('<pre><code class="language-' + attributeLang + '">');
+    html.push(content);
+    html.push('</code></pre>');
+
+    return html.join('');
+
+  } catch (error) {
+    console.error('Failed to fetch content from URL:', attributeUrl, error);
+    
+    return `Error loading content from ${attributeUrl}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+}
