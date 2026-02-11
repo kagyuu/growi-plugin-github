@@ -48,6 +48,7 @@ export const plugin: Plugin = function() {
 const createCode = async function(lang: string, url: string): Promise<string> {
   const rawUrl = url.replace(/\/blob\//, '/raw/refs/heads/');
   try {
+    console.log(rawUrl)
     const response = await fetch(rawUrl);
     
     if (!response.ok) {
