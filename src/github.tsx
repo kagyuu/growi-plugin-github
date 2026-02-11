@@ -1,7 +1,7 @@
 import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github-dark.css';
+import 'highlight.js/styles/tokyo-night-dark.css';
 
 import './github.css'
 
@@ -63,7 +63,7 @@ const createCode = async function(lang: string, url: string): Promise<string> {
 
     const html = [];
     html.push('<div class="growi-plugin-github-title">');
-    html.push(`<a href="${url}" target="_blank" rel="noopener noreferrer">🏷${url}</a>`);
+    html.push(`<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
     html.push('</div>');
     html.push(`<div class="growi-plugin-github-code"><pre><code class="language-${lang}">\n`);
     html.push(hljs.highlight(content, { language: lang, ignoreIllegals: true}).value);
