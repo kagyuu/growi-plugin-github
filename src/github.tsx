@@ -45,9 +45,10 @@ export const plugin: Plugin = function() {
   };
 };
 
-const createCode = async function(attributeLang: string, attributeUrl: string): Promise<string> {
+const createCode = async function(lang: string, url: string): Promise<string> {
   try {
-    const response = await fetch(attributeUrl);
+    const rawUrl = url.replace('/blob/', '/raw/refs/heads/');
+    const response = await fetch(rawUrl);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -57,16 +58,16 @@ const createCode = async function(attributeLang: string, attributeUrl: string): 
 
     const html = [];
     html.push('<div class="growi-plugin-github-title">');
-    html.push(`<a href="${attributeUrl}" target="_blank" rel="noopener noreferrer">🏷${attributeUrl}</a>`);
+    html.push(`<a href="${url}" target="_blank" rel="noopener noreferrer">🏷${url}</a>`);
     html.push('</div>');
-    html.push(`<div class="growi-plugin-github-code"><pre><code class="language-${attributeLang}">\n`);
-    html.push(hljs.highlight(content, { language: attributeLang, ignoreIllegals: true}).value);
+    html.push(`<div class="growi-plugin-github-code"><pre><code class="language-${lang}">\n`);
+    html.push(hljs.highlight(content, { language: lang, ignoreIllegals: true}).value);
     html.push('</code></pre></div>');
     return html.join('');
 
   } catch (error) {
-    console.error('Failed to fetch content from URL:', attributeUrl, error);
+    console.error('Failed to fetch content from URL:', url, error);
     
-    return `Error loading content from ${attributeUrl}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    return `Error loading content from ${url}: ${error instanceof Error ? error.message : 'Unknown error'}`;
   }
 }
