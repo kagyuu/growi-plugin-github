@@ -56,7 +56,7 @@ const createCode = async function(attributeLang: string, attributeUrl: string): 
     const content = await response.text();
 
     const html = [];
-    html.push('<div class="growi-plugin-github-window-title">');
+    html.push('<div class="growi-plugin-github-title">');
     html.push(`<a href="${attributeUrl}" target="_blank" rel="noopener noreferrer">🏷${attributeUrl}</a>`);
     html.push('</div>');
     html.push(`<div class="growi-plugin-github-code"><pre><code class="language-${attributeLang}">\n`);
