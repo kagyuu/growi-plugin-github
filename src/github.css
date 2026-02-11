@@ -1,37 +1,11 @@
 /* ウィンドウ全体の枠組み */
 .growi-plugin-github-window-container {
-  width: 400px; /* 必要に応じて調整 */
-  background-color: #c0c0c0; /* クラシックなグレー */
-  padding: 3px;
-  /* 昔のWindows特有の立体感（外枠） */
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
-  border-right: 2px solid #808080;
-  border-bottom: 2px solid #808080;
-  box-shadow: 1px 1px 0 0 #000000;
-  font-family: "MS UI Gothic", "Tahoma", sans-serif;
 }
 
 /* タイトルバー部分 */
 .growi-plugin-github-title {
-  background: linear-gradient(90deg, #000080, #1084d0); /* 濃い青のグラデーション */
-  color: white;
-  padding: 3px 5px;
-  font-weight: bold;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
 }
 
 /* コンテンツ（ソースコード）部分 */
 .growi-plugin-github-code {
-  background-color: #ffffff; /* 中身は白 */
-  margin: 2px;
-  padding: 10px;
-  /* 凹んで見えるようなボーダー */
-  border-top: 2px solid #808080;
-  border-left: 2px solid #808080;
-  border-right: 2px solid #ffffff;
-  border-bottom: 2px solid #ffffff;
-  overflow-x: auto;
 }
