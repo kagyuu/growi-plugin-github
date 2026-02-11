@@ -44,7 +44,6 @@ export const plugin: Plugin = function() {
 };
 
 const createCode = async function(attributeLang: string, attributeUrl: string): Promise<string> {
-
   try {
     const response = await fetch(attributeUrl);
     
@@ -53,8 +52,12 @@ const createCode = async function(attributeLang: string, attributeUrl: string): 
     }
     
     const content = await response.text();
-    const highlighted = hljs.highlight(content, { language: attributeLang, ignoreIllegals: true });
-    return highlighted.value
+
+    const html = [];
+    html.push(`<pre>${attributeUrl}<code class="lang-${attributeLang}">`);
+    html.push(hljs.highlight(content, { language: attributeLang, ignoreIllegals: true }).value);
+    html.push('</code></pre>');
+    return html.join('');
 
   } catch (error) {
     console.error('Failed to fetch content from URL:', attributeUrl, error);
